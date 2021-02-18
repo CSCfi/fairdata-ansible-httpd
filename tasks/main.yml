@@ -1,0 +1,12 @@
+---
+- name: Include httpd repository tasks
+  include_tasks: "httpd-repository.yml"
+  tags: httpd-repository
+
+- name: Include httpd configuration tasks
+  include_tasks: "httpd-configure.yml"
+  tags: httpd-configure
+
+- name: Include httpd service tasks
+  include_tasks: "httpd-service.yml"
+  tags: httpd-service

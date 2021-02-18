@@ -1,0 +1,19 @@
+---
+- name: Ensure httpd rpm package is installed
+  yum:
+    name: 'httpd'
+    state: latest
+  become: yes
+  tags: httpd-service
+
+- name: Ensure required httpd modules are installed
+  yum:
+    name:
+    - mod_ssl
+    - mod_php
+    - mod_security
+    - mod_security_crs
+    state: latest
+  become: yes
+  notify: Restart httpd
+  tags: httpd-service

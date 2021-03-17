@@ -1,0 +1,31 @@
+---
+- name: Ensure httpd configuration files are correct
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0644
+  with_items:
+  - src: 'httpd.conf.j2'
+    dest: '/etc/httpd/conf/httpd.conf'
+  - src: 'ssl.conf.j2'
+    dest: '/etc/httpd/conf.d/ssl.conf'
+  become: yes
+  notify:
+  - Restart httpd
+  tags: httpd-configure
+
+- name: Install shared SSL certificates
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: 'root'
+    group: 'root'
+    mode: 600
+  with_items:
+  - src: '{{ ssl_wildcard_certificate_src }}'
+    dest: '{{ ssl_wildcard_certificate_dest }}'
+  - src: '{{ ssl_wildcard_certificate_key_src }}'
+    dest: '{{ ssl_wildcard_certificate_key_dest }}'
+  when: install_ssl_wildcard_certificate
+  become: yes
+  tags: httpd-configure

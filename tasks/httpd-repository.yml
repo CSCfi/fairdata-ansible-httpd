@@ -2,7 +2,8 @@
 - name: Ensure httpd rpm package is installed
   yum:
     name: 'httpd'
-    state: latest
+    # state: present, in order not to upgrade any package to an untested version
+    state: present
   become: yes
   tags: httpd-service
 
@@ -13,7 +14,8 @@
     - mod_php
     - mod_security
     - mod_security_crs
-    state: latest
+    # state: present, in order not to upgrade any package to an untested version
+    state: present
   become: yes
   notify: Restart httpd
   tags: httpd-service
